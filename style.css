@@ -11,11 +11,18 @@ body {
 
 .container {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   max-width: 1200px;
   margin: 0 auto;
   padding: 10px;
   gap: 20px;
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
 }
 
 .game-panel,
@@ -29,11 +36,11 @@ body {
 }
 
 .game-panel {
-  width: 100%;
+  flex-basis: 100%;
 }
 
 .log-panel {
-  width: 25%;
+  flex-basis: 30%;
   text-align: left;
   display: none;
   font-size: 12px;
@@ -44,10 +51,24 @@ body {
 }
 
 .player-stats-panel {
-  width: 20%;
+  flex-basis: 25%;
   text-align: left;
   display: none;
   font-size: 14px;
+}
+
+@media screen and (max-width: 900px) {
+  .game-panel {
+    flex-basis: unset;
+  }
+
+  .player-stats-panel {
+    flex-basis: unset;
+  }
+
+  .log-panel {
+    flex-basis: unset;
+  }
 }
 
 h1 {
@@ -66,6 +87,36 @@ h1 {
   border-radius: 8px;
   background-color: #f8f9fa;
   border: 1px solid #e9ecef;
+}
+
+.player-stats-detail {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 900px) {
+  .player-stats-detail {
+    column-gap: 1.5rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .player-stats-detail > p {
+    width: calc(100% / 3 - 2 * 1.5rem);
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .player-stats-detail > p {
+    width: calc(100% / 2 - 1.5rem);
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .player-stats-detail > p {
+    width: 100%;
+  }
 }
 
 .status p {
