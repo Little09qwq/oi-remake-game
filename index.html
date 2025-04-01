@@ -7,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="OI重开模拟器是一个模拟信息学竞赛（OI）选手生涯的文字游戏。体验从高一到高二的OI比赛生涯，包括CSP-S、NOIP、WC、省选、NOI等比赛。">
     <meta name="keywords" content="OI,信息学竞赛,模拟游戏,文字游戏,NOIP,CSP,NOI">
-    <meta name="author" content="Little09">
+    <meta name="author" content="Qingyu, Little09">
     <meta name="robots" content="index,follow">
     <title>OI 重开模拟游戏</title>
     <link rel="stylesheet" href="style.css"/>
     <script src="problemPool.js"></script>
+    <script src="problemPoolIOI.js"></script>
     <script src="game.js"></script>
   </head>
 
@@ -29,6 +30,13 @@
               <p data-tooltip="促进字符串题目的思考">字符串: <span id="player-string">0</span></p>
               <p data-tooltip="促进图论题目的思考">图论: <span id="player-graph">0</span></p>
               <p data-tooltip="促进组合计数题目的思考">组合计数: <span id="player-combinatorics">0</span></p>
+              <p data-tooltip="促进计算几何题目的思考">计算几何: <span id="player-geometry">0</span></p>
+              <p data-tooltip="促进线性代数题目的思考">线性代数: <span id="player-linearalgebra">0</span></p>
+              <p data-tooltip="促进博弈论题目的思考">博弈论: <span id="player-gametheory">0</span></p>
+              <p data-tooltip="促进构造题目的思考">构造: <span id="player-construction">0</span></p>
+              <p data-tooltip="促进多项式题目的思考">多项式: <span id="player-polynomial">0</span></p>
+              <p data-tooltip="促进数论题目的思考">数论: <span id="player-numbertheory">0</span></p>
+              <p data-tooltip="增加查看模糊题目数据的概率">经验: <span id="player-experience">0</span></p>
               <p data-tooltip="增大题目思考的成功率，引导你想出正确思路">思维: <span id="player-thinking">0</span></p>
               <p data-tooltip="增大代码实现的成功率，引导你写出正确代码">代码: <span id="player-coding">0</span></p>
               <p data-tooltip="细心的人挂分少" id="carefulness-stat" style="display: none;">细心: <span
@@ -44,7 +52,7 @@
       <div class="game-panel">
         <!-- 开始界面 -->
         <div class="start-screen" id="start-screen">
-          <h1 id="game-title">OI 比赛模拟游戏</h1>
+          <h1 id="game-title">OI 比赛模拟游戏 (改版)</h1>
           <div class="start-buttons" style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
             <button onclick="showAdvancedMode()" class="btn blue">正常模式</button>
             <button onclick="showChangelog()" class="btn purple">更新日志</button>
@@ -52,6 +60,7 @@
           <div class="changelog-content"
             style="display: none; max-height: 500px; overflow-y: auto; padding: 20px; background-color: #f8f9fa; border-radius: 8px; margin: 20px auto; text-align: left; max-width: 800px;">
             <div>
+              
               <h3 style="color: #4a90e2;">2024.3.27</h3>
               <ul style="list-style-type: disc; padding-left: 20px;">
                 <li>添加了难度选择，原先模式为目前"困难"模式</li>
@@ -88,8 +97,8 @@
         <!-- 添加天赋分配面板 -->
         <div class="allocate-panel" id="allocate-panel" style="display: none;">
           <h2>分配天赋点</h2>
-          <p>你有 <span id="remaining-points">15</span> 点天赋点可以分配。</p>
           <div class="allocate-options">
+            <p style="margin-bottom: 10px;">可分配的知识点：<span id="remaining-points">15</span> 点</p>
             <div class="allocate-option">
               <label for="dp">动态规划:</label>
               <input type="number" id="dp" min="0" max="10" value="0">
@@ -110,6 +119,61 @@
               <label for="combinatorics">组合计数:</label>
               <input type="number" id="combinatorics" min="0" max="10" value="0">
             </div>
+            <p style="margin: 15px 0 10px 0;">以下知识点固定为0，不可调整：</p>
+            <div class="allocate-option">
+              <label for="geometry">计算几何:</label>
+              <input type="number" id="geometry" value="0" readonly disabled>
+            </div>
+            <div class="allocate-option">
+              <label for="linearalgebra">线性代数:</label>
+              <input type="number" id="linearalgebra" value="0" readonly disabled>
+            </div>
+            <div class="allocate-option">
+              <label for="gametheory">博弈论:</label>
+              <input type="number" id="gametheory" value="0" readonly disabled>
+            </div>
+            <div class="allocate-option">
+              <label for="construction">构造:</label>
+              <input type="number" id="construction" value="0" readonly disabled>
+            </div>
+            <div class="allocate-option">
+              <label for="polynomial">多项式:</label>
+              <input type="number" id="polynomial" value="0" readonly disabled>
+            </div>
+            <div class="allocate-option">
+              <label for="numbertheory">数论:</label>
+              <input type="number" id="numbertheory" value="0" readonly disabled>
+            </div>
+            <div class="allocate-option">
+              <label for="adhoc">杂题:</label>
+              <input type="number" id="adhoc" value="0" readonly disabled>
+            </div>
+            <p style="margin: 15px 0 10px 0;">可分配的能力值：<span id="remaining-ability-points">10</span> 点</p>
+            <div class="allocate-option">
+              <label for="thinking">思维能力:</label>
+              <input type="number" id="thinking" min="0" max="10" value="0">
+            </div>
+            <div class="allocate-option">
+              <label for="coding">代码能力:</label>
+              <input type="number" id="coding" min="0" max="10" value="0">
+            </div>
+            <div class="allocate-option">
+              <label for="carefulness">细心能力:</label>
+              <input type="number" id="carefulness" min="0" max="10" value="0">
+            </div>
+            <div class="allocate-option">
+              <label for="experience">经验能力:</label>
+              <input type="number" id="experience" min="0" max="10" value="0">
+            </div>
+            <div class="allocate-option">
+              <label for="quickness">迅捷能力:</label>
+              <input type="number" id="quickness" min="0" max="10" value="0">
+            </div>
+            <div class="allocate-option">
+              <label for="mental">心理素质:</label>
+              <input type="number" id="mental" min="0" max="10" value="0">
+            </div>
+
           </div>
           <button onclick="confirmAllocation()" class="btn">确认分配</button>
         </div>
